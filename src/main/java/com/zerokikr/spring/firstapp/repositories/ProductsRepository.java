@@ -11,4 +11,5 @@ public interface ProductsRepository extends PagingAndSortingRepository<Product, 
 
     // PagingAndSortingRepository<Product, Long> позволит использовать пагинацию
     // JpaSpecificationExecutor<Product> позволит использовать спецификации (ProductSpecs)
+    // CrudRepository <Product, Long> если пагинация и спецификации не требуются
 }

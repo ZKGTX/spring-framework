@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -29,6 +30,8 @@ private ProductsService productsService;
                                    @RequestParam(value = "keyword", required = false) String keyword,
                                    @RequestParam(value = "minPrice", required = false) Integer minPrice,
                                    @RequestParam(value = "maxPrice", required = false) Integer maxPrice) {
+
+
         Product product = new Product();
         Specification<Product> spec = Specification.where(null);
         if (keyword != null) {
@@ -64,7 +67,7 @@ private ProductsService productsService;
         return "product-page";
     }
 
-    @GetMapping("/edit/{id}")       // localhost:8189/firstapp/products/id/edit - аргумент id метода edit() получаем из строки GET-запроса, после чего в модель помещаем объект класса Product с соответсвующим id
+    @GetMapping("/edit/{id}")       // localhost:8189/firstapp/products/edit/id - аргумент id метода edit() получаем из строки GET-запроса, после чего в модель помещаем объект класса Product с соответсвующим id
     public String showEditProductForm(Model model, @PathVariable("id") Long id) {
         Product product = productsService.getById(id);
         model.addAttribute("product", product);
