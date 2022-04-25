@@ -8,7 +8,6 @@ import javax.persistence.*;
 @Entity
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @Table(name = "products")
 public class Product {
 
@@ -21,7 +20,15 @@ private Long id;
 private String title;
 
 @Column (name = "price")
-private Integer price;
+private int price;
+
+@Column (name = "views")
+private int views;
 
 
+
+    @Override
+    public String toString() {
+        return title + " (просмотров: " + views + ")";
+    }
 }

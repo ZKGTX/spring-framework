@@ -10,15 +10,12 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
-import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class  SecurityConfig extends WebSecurityConfigurerAdapter {
 
    // private DataSource dataSource;  //  стандартный Spring Bean, отвечающий за подключение к базе данных (БД)
                                       //  настройки DataSource находятся в файле application.properties
@@ -40,21 +37,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }*/
 
     @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws  Exception {
+        auth.authenticationProvider(authenticationProvider());
+    }
+
+    @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/products/**").hasAnyRole("ADMIN")
                 .anyRequest().permitAll()
                 .and()
                 .formLogin()      //  будет показана стандартная для Spring форма для логина
-                //                .loginPage("/login")   //  можно также указать запрос страницы с формой логина
-                //                .loginProcessingUrl("/authenticateTheUser")       //  необходимо будет указать куда форма пошлет POST-запрос после того как юзер заполнит ее
+                .loginPage("/login")   //  можно также указать запрос страницы с формой логина
+                .loginProcessingUrl("/authenticateTheUser")       //  необходимо будет указать куда форма пошлет POST-запрос после того как юзер заполнит ее на странице products
                 .permitAll();
     }
 
-   @Override
-   protected void configure(AuthenticationManagerBuilder auth) throws  Exception {
-       auth.authenticationProvider(authenticationProvider());
-   }
+
 
    @Bean
    public BCryptPasswordEncoder passwordEncoder () {

@@ -2,11 +2,14 @@ package com.zerokikr.spring.firstapp.controllers;
 
 
 import com.zerokikr.spring.firstapp.entities.Product;
+import com.zerokikr.spring.firstapp.entities.User;
+import com.zerokikr.spring.firstapp.repositories.UserRepository;
 import com.zerokikr.spring.firstapp.repositories.specifications.ProductSpecs;
 import com.zerokikr.spring.firstapp.services.ProductsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -20,18 +23,26 @@ public class ProductsController  {
 
 private ProductsService productsService;
 
+    @Autowired
+    private UserRepository userRepository;
+
     @Autowired              // внедрение ProductService через сеттер
     public void setProductsService(ProductsService productsService) {
         this.productsService = productsService;
     }
 
+
+
     @GetMapping               // localhost:8189/firstapp/products
-    public String showProductsList(Model model,
+    public String showProductsList(Principal principal, Model model,
                                    @RequestParam(value = "keyword", required = false) String keyword,
                                    @RequestParam(value = "minPrice", required = false) Integer minPrice,
                                    @RequestParam(value = "maxPrice", required = false) Integer maxPrice) {
 
-
+        if (principal != null) {
+            User user = userRepository.findOneByUsername(principal.getName());
+            model.addAttribute("username", user.getName());
+        }
         Product product = new Product();
         Specification<Product> spec = Specification.where(null);
         if (keyword != null) {
@@ -48,12 +59,14 @@ private ProductsService productsService;
         model.addAttribute("keyword", keyword);
         model.addAttribute("minPrice", minPrice);
         model.addAttribute("maxPrice", maxPrice);
+        model.addAttribute("top3Products", productsService.getTop3ProductsList());
         //  теперь можно работать со списком продуктов на фронтенд странице products.html
         return "products";
     }
 
 
     @GetMapping("/add")            // localhost:8189/firstapp/products/add
+    @Secured(value = "ROLE_ADMIN")
     public String showAddProductForm(Model model) {
         Product product = new Product();
         model.addAttribute("product", product);
@@ -68,6 +81,7 @@ private ProductsService productsService;
     }
 
     @GetMapping("/edit/{id}")       // localhost:8189/firstapp/products/edit/id - аргумент id метода edit() получаем из строки GET-запроса, после чего в модель помещаем объект класса Product с соответсвующим id
+    @Secured(value = "ROLE_ADMIN")
     public String showEditProductForm(Model model, @PathVariable("id") Long id) {
         Product product = productsService.getById(id);
         model.addAttribute("product", product);
@@ -75,8 +89,9 @@ private ProductsService productsService;
     }
 
     @PostMapping("/edit")
+    @Secured(value = "ROLE_ADMIN")
     public String update(@ModelAttribute("product") Product product) {   // модель содержит объект класса Product с полями, значения которых равны введенным в форму на фронтенде,
-                                                                                                        // id - аргумент из строки запроса, который указывает на "бэкендный" объект класса Product, поля которого требуется обновить значениями из модели.
+                                                        // id - аргумент из строки запроса, который указывает на "бэкендный" объект класса Product, поля которого требуется обновить значениями из модели.
         productsService.addOrUpdate(product); //  передаем в метод id, который укажет на объект, поля которого нужно обновить, и product из модели, згачение полей которого будут использованы для обновления
         return "redirect:/products";
     }

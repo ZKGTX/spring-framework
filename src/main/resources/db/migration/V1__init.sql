@@ -1,4 +1,4 @@
-CREATE TABLE products (id serial, title varchar(100), price int);
+CREATE TABLE products (id serial, title varchar(100), price int, views int DEFAULT (0));
 
 INSERT INTO products (title, price) VALUES
  ('Bread', 40), ('Milk', 80), ('Cheese', 100), ('Garlic', 120), ('Potatoes', 50), ('Vodka', 150),
@@ -35,7 +35,8 @@ CREATE TABLE users_roles (
 INSERT INTO roles (name) VALUES ('ROLE_USER'), ('ROLE_ADMIN');
 
 INSERT INTO users (username, password, name, email) VALUES
-('admin', '$2a$12$hSSxBbcJ31vOpDqA/3qjzeLjVZG65zlmN.IQxZvUpV0eh5bSxu22C', 'Sergey Semenov', 'zerokikr@gmail.com');
+('admin', '$2a$12$hSSxBbcJ31vOpDqA/3qjzeLjVZG65zlmN.IQxZvUpV0eh5bSxu22C', 'Sergey Semenov', 'zerokikr@gmail.com'),
+('user', '$2a$12$hSSxBbcJ31vOpDqA/3qjzeLjVZG65zlmN.IQxZvUpV0eh5bSxu22C', 'Stepan Semenov', 'rkikorez@gmail.com');
 
-INSERT INTO users_roles (user_id, role_id) VALUES (1,1), (1,2);
+INSERT INTO users_roles (user_id, role_id) VALUES (1,1), (1,2), (2,1);
 

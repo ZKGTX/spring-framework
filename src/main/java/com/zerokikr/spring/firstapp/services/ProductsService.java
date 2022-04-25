@@ -45,6 +45,15 @@ public class ProductsService {
         productsRepository.save(product);
     }
 
+    public void incrementProductViews (Product product) {
+        product.setViews(product.getViews() + 1);
+        productsRepository.save(product);
+    }
+
+    public List<Product> getTop3ProductsList() {
+        return productsRepository.getTop3Products();
+    }
+
     public void deleteById(Long id) {
         productsRepository.deleteById(id);
     }

@@ -22,21 +22,18 @@
 
 	<dependencies>
 
-
-
-		<!-- https://mvnrepository.com/artifact/org.springframework/spring-aop -->
+		<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-aop -->
 		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-aop</artifactId>
-			<version>5.2.12.RELEASE</version>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-aop</artifactId>
+			<version>2.3.12.RELEASE</version>
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/org.aspectj/aspectjweaver -->
 		<dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjweaver</artifactId>
-			<version>1.9.6</version>
-			<scope>runtime</scope>
+			<version>1.9.9.1</version>
 		</dependency>
 
 		<dependency>
@@ -62,8 +59,6 @@
 			<version>2.6.6</version>
 		</dependency>
 
-
-
 		<dependency>
 			<groupId>org.flywaydb</groupId>
 			<artifactId>flyway-core</artifactId>
@@ -82,13 +77,11 @@
 			<version>8.5.4</version>
 		</dependency>
 
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-
 
 		<dependency>
 			<groupId>org.springframework.security</groupId>
@@ -114,9 +107,10 @@
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-			<version>1.18.22</version>
+			<version>1.18.16</version>
 			<scope>provided</scope>
 		</dependency>
+
 
 	</dependencies>
 
